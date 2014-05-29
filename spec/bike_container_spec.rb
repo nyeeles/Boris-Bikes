@@ -4,22 +4,22 @@ class ContainerHolder; include BikeContainer; end
 
 describe BikeContainer do
 	
+	let(:holder) { ContainerHolder.new }
 	let(:bike) { Bike.new }
 	let(:broken_bike) do
 		bike = Bike.new
 		bike.break!
 		bike
 	end
-	let(:holder) { ContainerHolder.new }
+	
+	def fill_holder(holder)
+		holder.capacity.times { holder.dock(Bike.new) }
+	end	  
 
 	it 'accepts a bike' do
 		expect(holder.bike_count).to eq 0
 		holder.dock(bike)
 		expect(holder.bike_count).to eq 1
-	end
-
-	def add_ten_bikes
-		10.times { holder.dock(bike) }
 	end
 
 	it 'releases a bike' do
@@ -44,9 +44,5 @@ describe BikeContainer do
 		holder.dock(broken_bike)
 		expect(holder.available_bikes).to eq([bike])
 	end	
-
-	def fill_holder(holder)
-		holder.capacity.times { holder.dock(Bike.new) }
-	end	  
 
 end
